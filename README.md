@@ -121,8 +121,8 @@ POST /api/auth/register
 
 ```json
 {
-  "name": "Taha",
-  "email": "taha@example.com",
+  "name": "Test",
+  "email": "test@example.com",
   "password": "12345678"
 }
 ```
@@ -139,7 +139,7 @@ POST /api/auth/login
 
 ```json
 {
-  "email": "taha@example.com",
+  "email": "test@example.com",
   "password": "12345678"
 }
 ```
