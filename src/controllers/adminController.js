@@ -52,6 +52,7 @@ const deleteAnyUserTasks = async (req, res) => {
 
         if(!task) {
             return res.status(404).json({
+                success: false,
                 message: "Task not found!"
             })
         }
@@ -59,11 +60,13 @@ const deleteAnyUserTasks = async (req, res) => {
         await task.deleteOne()
 
         res.status(200).json({
+            success: true,
             message: `Title: ${task.title} \n Task deleted Successfully!`
         })
 
     } catch (error) {
         res.status(500).json({
+            success: false,
             message: error.message
         })
     }

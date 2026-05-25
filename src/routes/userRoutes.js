@@ -6,6 +6,7 @@ const authorizeRoles = require('../middleware/roleMiddleware')
 
 router.get('/profile', verifyToken, (req, res) => {
     res.status(200).json({
+        success: true,
         message: "Protected route accessed",
         user: req.user
     })
@@ -13,6 +14,7 @@ router.get('/profile', verifyToken, (req, res) => {
 
 router.get('/admin', verifyToken, authorizeRoles('admin'), (req, res) => {
     res.json({
+        success: true,
         message: 'Welcome admin',
         user: req.user
     })

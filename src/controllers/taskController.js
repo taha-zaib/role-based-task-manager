@@ -11,10 +11,14 @@ const createTask = async (req, res) => {
             createdBy: req.user.id
         })
 
-        res.status(201).json(task)
+        res.status(201).json({
+            success: true,
+            task
+        })
         
     } catch (error) {
         res.status(500).json({
+            success: false,
             message: error.message
         })
     }
@@ -28,9 +32,13 @@ const getMyTasks = async (req, res) => {
             createdBy: req.user.id
         })
 
-        res.status(200).json(tasks)
+        res.status(200).json({
+            success: true,
+            tasks
+        })
     } catch (error) {
         res.status(500).json({
+            success: false,
             mesage: error.message
         })
     }
@@ -44,6 +52,7 @@ const updateMyTask = async (req, res) => {
         //check if task exists
         if(!task) {
             res.status(404).json({
+                success: false,
                 message: "Task not found!"
             })
         }
@@ -51,6 +60,7 @@ const updateMyTask = async (req, res) => {
         //ownership check
         if(task.createdBy.toString() !== req.user.id) {
             return res.status(403).json({
+                success: false,
                 message: "Access denied!"
             })
         }
@@ -64,10 +74,14 @@ const updateMyTask = async (req, res) => {
         }
         const updatedTask = await task.save();
 
-        res.status(200).json(updatedTask)
+        res.status(200).json({
+            success: true,
+            updatedTask
+        })
 
     } catch (error) {
         res.status(500).json({
+            success: false,
             message: error.message
         })
     }
@@ -80,6 +94,7 @@ const deleteTask = async (req, res) => {
         //check if task exists
         if(!task) {
             return res.status(404).json({
+                success: false,
                 message: "Task not found!"
             })
         }
@@ -87,6 +102,7 @@ const deleteTask = async (req, res) => {
         //check ownership
         if(task.createdBy.toString() !== req.user.id) {
             return res.status(403).json({
+                success: false,
                 message: "Access denied!"
             })
         }
@@ -94,11 +110,13 @@ const deleteTask = async (req, res) => {
         await task.deleteOne();
 
         res.status(200).json({
+            success: true,
             message: "Task deleted successfully!"
         })
 
     } catch (error) {
         res.status(500).json({
+            success: false,
             message: error.message
         })
     }

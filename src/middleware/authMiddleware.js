@@ -7,6 +7,7 @@ const verifyTokens = (req, res, next) => {
 
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return res.status(401).json({
+                success: false,
                 message: "No token provided"
             })
         }
@@ -17,7 +18,7 @@ const verifyTokens = (req, res, next) => {
         //verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        //attahc user data to request
+        //attach user data to request
         req.user = decoded;
 
         //continue to next middleware or controller
@@ -25,6 +26,7 @@ const verifyTokens = (req, res, next) => {
 
     } catch (error) {
         res.status(401).json({
+            success: false,
             message: error.message
         })
     }

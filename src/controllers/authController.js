@@ -7,10 +7,25 @@ const registerUser = async (req, res) => {
         
         const { name, email, password } = req.body;
 
+        if(!password) {
+            return res.status(404).json({
+                success: false,
+                message: "Password not found!"
+            })
+        }
+
         const existingUser = await User.findOne({ email })
         if (existingUser) {
             return res.status(400).json({
-                message: 'User already exists'
+                success: false,
+                message: 'Email already exists!'
+            })
+        }
+
+        if(password.length < 8) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password must be atleast 8 characters long.'
             })
         }
 
@@ -26,6 +41,7 @@ const registerUser = async (req, res) => {
         })
 
         res.status(201).json({
+            success: true,
             message:'User registered successfully',
             user: {
                 id: user._id,
@@ -37,6 +53,7 @@ const registerUser = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({
+            success: false,
             message: error.message
         });
     }
@@ -51,7 +68,15 @@ const loginUser = async (req, res) => {
 
         if (!user) {
             return res.status(400).json({
+                success: false,
                 message: "Invalid Email"
+            })
+        }
+
+        if(!password) {
+            return res.status(404).json({
+                success: false,
+                message: "Password not found!"
             })
         }
 
@@ -59,7 +84,8 @@ const loginUser = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password)
 
         if (!isMatch) {
-            res.status(400).json({
+            return res.status(400).json({
+                success: false,
                 message: "Invalid Password"
             })
         }
@@ -77,6 +103,7 @@ const loginUser = async (req, res) => {
         )
 
         res.status(200).json({
+            success: true,
             message: "Login successful",
             token,
             user: {
@@ -89,6 +116,7 @@ const loginUser = async (req, res) => {
         
     } catch (error) {
         res.status(500).json({
+            success: false,
             message: error.message
         })
     }
