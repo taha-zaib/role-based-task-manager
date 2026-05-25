@@ -262,10 +262,6 @@ Backend deployed on Railway.
 # Future Improvements
 
 - Frontend Integration
-- Task Categories
-- Due Dates
-- Pagination
-- Refresh Tokens
 - Better Validation
 - Global Error Handler
 
